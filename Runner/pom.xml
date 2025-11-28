@@ -73,11 +73,12 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
 
-                <!-- 这里会导致命令行跑 mvn spring-boot:run 只打包不运行，应试 <skip> 标签是 true 的原因 -->
                 <configuration>
                     <mainClass>xyz.fay.runner.Application</mainClass>
-                    <skip>true</skip>
+                    <!-- 如果 <skip> 标签是 true 会导致命令行跑 mvn spring-boot:run 只打包不运行 -->
+                    <!-- <skip>true</skip> -->
                 </configuration>
+
                 <executions>
                     <execution>
                         <id>repackage</id>
@@ -86,7 +87,6 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
         </plugins>
     </build>
