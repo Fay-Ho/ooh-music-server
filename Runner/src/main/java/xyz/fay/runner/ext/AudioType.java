@@ -68,11 +68,8 @@ public class AudioType extends MediaType {
 
     @Nullable
     public static AudioType getFromFileExtension(String filePath) {
-        return EXTENSION_MAP
-            .values()
-            .stream()
-            .filter(v -> FilenameUtils.getExtension(filePath).contains(v.getSubtype()))
-            .findAny()
-            .orElse(null);
+        String extension = FilenameUtils.getExtension(filePath).toLowerCase();
+        if (extension.isEmpty()) return null;
+        return EXTENSION_MAP.get(extension);
     }
 }

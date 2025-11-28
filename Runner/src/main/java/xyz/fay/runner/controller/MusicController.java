@@ -28,8 +28,16 @@ public class MusicController {
 
     @GetMapping("/api/music")
     public CompletableFuture<ResponseEntity<?>> request(@NonNull MusicQuery query) {
-        if (query.getName() == null) return getList(query.getType()).thenApply(r -> r);
+        if (query.getName() == null) return getList(query).thenApply(r -> r);
         return getMusic(query.getType(), query.getName()).thenApply(r -> r);
+    }
+
+    private CompletableFuture<ResponseEntity<Map<String, List<MusicQueryResponse>>>> getList(@NonNull MusicQuery query) {
+        return musicService.getList(query)
+            .thenApply(list -> {
+                if (list == null || list.isEmpty()) return ResponseEntity.notFound().build();
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(Collections.singletonMap("data", list));
+            });
     }
 
     private CompletableFuture<ResponseEntity<Resource>> getMusic(@Nullable String type, @NonNull String name) {
@@ -39,14 +47,6 @@ public class MusicController {
                 AudioType audioType = AudioType.getFromFileExtension(resource.getFilename());
                 if (audioType == null) return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
                 return ResponseEntity.ok().contentType(audioType).body(resource);
-            });
-    }
-
-    private CompletableFuture<ResponseEntity<Map<String, List<MusicQueryResponse>>>> getList(@Nullable String type) {
-        return musicService.getList(type)
-            .thenApply(list -> {
-                if (list == null || list.isEmpty()) return ResponseEntity.notFound().build();
-                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(Collections.singletonMap("data", list));
             });
     }
 }

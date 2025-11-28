@@ -75,7 +75,7 @@
 
                 <configuration>
                     <mainClass>xyz.fay.runner.Application</mainClass>
-                    <!-- 如果 <skip> 标签是 true 会导致命令行跑 mvn spring-boot:run 只打包不运行 -->
+                    <!-- if tag <skip> mark true, `mvn spring-boot:run` will only package the application but not run -->
                     <!-- <skip>true</skip> -->
                 </configuration>
 

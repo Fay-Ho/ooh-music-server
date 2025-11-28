@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Support asynchronous requests
 - Add new music service module
 - Add more music formats support (AAC, MP3, WAV)
+- Add keyword search, artist search and artists categories
 
 ### Changed
 - Move all requests to music service for processing

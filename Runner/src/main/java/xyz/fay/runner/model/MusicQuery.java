@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public final class MusicQuery {
-    private String type;
+    private String artist;
+    private String category;
     private String name;
+    private String search;
+    private String type;
 }

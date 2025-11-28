@@ -6,7 +6,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import xyz.fay.runner.model.MusicQuery;
 import xyz.fay.runner.model.MusicQueryResponse;
+import xyz.fay.runner.utils.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,18 +30,48 @@ public class MusicService {
         this.asyncTaskExecutor = asyncTaskExecutor;
     }
 
-    public CompletableFuture<List<MusicQueryResponse>> getList(String type) {
+    public CompletableFuture<List<MusicQueryResponse>> getList(@NonNull MusicQuery query) {
         return CompletableFuture.supplyAsync(() -> {
-            Path dirPath = getDirPath(type);
+            Path dirPath = getDirPath(query.getType());
             if (!Files.exists(dirPath) || !Files.isDirectory(dirPath)) return null;
 
             File[] files = dirPath.toFile().listFiles();
             if (files == null || files.length == 0) return null;
 
+            if (query.getArtist() != null) {
+                return Arrays.stream(files)
+                    .filter(f -> !f.isHidden())
+                    .filter(f -> StringUtils.substringBefore(f.getName(), " - ").contains(query.getArtist()))
+                    .map(this::setResponseBody)
+                    .sorted(Comparator.comparing(MusicQueryResponse::getName, Collator.getInstance(Locale.CHINESE)))
+                    .collect(Collectors.toList());
+            }
+
+            if (query.getCategory() != null) {
+                if (query.getCategory().equals("artists")) {
+                    return Arrays.stream(files)
+                        .filter(f -> !f.isHidden())
+                        .map(f -> StringUtils.substringBefore(f.getName(), " - "))
+                        .distinct()
+                        .map(this::setR)
+                        .sorted(Comparator.comparing(MusicQueryResponse::getName, Collator.getInstance(Locale.CHINESE)))
+                        .collect(Collectors.toList());
+                }
+            }
+
+            if (query.getSearch() != null) {
+                return Arrays.stream(files)
+                    .filter(f -> !f.isHidden())
+                    .filter(f -> f.getName().contains(query.getSearch()))
+                    .map(this::setResponseBody)
+                    .sorted(Comparator.comparing(MusicQueryResponse::getName, Collator.getInstance(Locale.CHINESE)))
+                    .collect(Collectors.toList());
+            }
+
             return Arrays.stream(files)
                 .filter(f -> !f.isHidden())
                 .map(this::setResponseBody)
-                .sorted(Comparator.comparing(MusicQueryResponse::getDisplay, Collator.getInstance(Locale.CHINESE)))
+                .sorted(Comparator.comparing(MusicQueryResponse::getName, Collator.getInstance(Locale.CHINESE)))
                 .collect(Collectors.toList());
 
         }, asyncTaskExecutor);
@@ -76,13 +108,22 @@ public class MusicService {
         return musicPath;
     }
 
+    private MusicQueryResponse setR(@NonNull String string) {
+        return new MusicQueryResponse(
+            null,
+            null,
+            string,
+            null
+        );
+    }
+
     @NonNull
     private MusicQueryResponse setResponseBody(@NonNull File file) {
         String fileName = file.getName();
         return new MusicQueryResponse(
-            FilenameUtils.getBaseName(fileName),
             FilenameUtils.getExtension(fileName),
             fileName,
+            FilenameUtils.getBaseName(fileName),
             file.getParentFile().getName()
         );
     }
