@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class MusicQueryResponse {
+    private final String artist;
     private final String ext;
     private final String fullName;
     private final String name;

@@ -1,6 +1,8 @@
 package xyz.fay.runner.utils;
 
 public final class StringUtils {
+    private StringUtils() {}
+
     public static String substringBefore(final String string, final String separator) {
         if (string == null || string.isEmpty() || separator == null) {
             return string;

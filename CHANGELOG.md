@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] - 2025-11-30
+
+### Added
+
+### Changed
+- Code enhancement
+
+### Fixed
+
+### Removed
+
 ## [Unreleased] - 2025-11-28
+
 ### Added
 - Support asynchronous requests
 - Add new music service module
@@ -20,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ## [Unreleased] - 2025-11-24
+
 ### Added
 - Initial Music Server: First runnable version of the personal music steaming server
 - Core Audio Support: Basic playback support for common audio formats (FLAC)
@@ -34,6 +47,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ## [Unreleased] - 2025-11-03
+
 ### Added
 - Initial commit
 
