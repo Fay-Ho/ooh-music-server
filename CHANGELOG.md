@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] - 2025-12-07
+
+### Added
+
+### Changed
+- Code enhancement
+- Refactor AudioType Class
+- Disable Unnecessary Startup Logs
+- New Optional Utility Class
+	* Created a custom Optional (xyz.fayvox.music.common.Optional) class based on the design flaws of JDK 8 java.util.Optional
+	* Added null-coalescing handling for chained methods, enabling smoother null-value merging in chained calls
+
+### Fixed
+- Update Project Package Name
+	* Adjusted the project's base package name, migrating from the original package name to the new package name xyz.fayvox.music to unify naming conventions.
+
+### Removed
+
 ## [Unreleased] - 2025-11-30
 
 ### Added

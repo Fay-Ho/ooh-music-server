@@ -1,4 +1,4 @@
-package xyz.fay.runner.model;
+package xyz.fayvox.music.model;
 
 import lombok.Data;
 

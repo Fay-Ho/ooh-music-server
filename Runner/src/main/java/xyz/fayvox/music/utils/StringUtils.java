@@ -1,4 +1,4 @@
-package xyz.fay.runner.utils;
+package xyz.fayvox.music.utils;
 
 public final class StringUtils {
     private StringUtils() {}
