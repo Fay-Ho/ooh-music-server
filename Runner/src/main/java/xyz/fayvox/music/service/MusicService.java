@@ -1,5 +1,6 @@
 package xyz.fayvox.music.service;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -7,9 +8,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import xyz.fayvox.music.common.Optional;
-import xyz.fayvox.music.enums.Category;
+import xyz.fayvox.music.common.constant.MusicCategory;
 import xyz.fayvox.music.model.MusicQuery;
-import xyz.fayvox.music.model.MusicQueryResponse;
+import xyz.fayvox.music.model.MusicResponse;
 import xyz.fayvox.music.utils.PathUtils;
 import xyz.fayvox.music.utils.StringUtils;
 
@@ -28,6 +29,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@AllArgsConstructor
 @Service
 public final class MusicService {
     private static final String NAME_SEPARATOR = " - ";
@@ -35,11 +37,7 @@ public final class MusicService {
 
     private final Executor asyncTaskExecutor;
 
-    public MusicService(Executor asyncTaskExecutor) {
-        this.asyncTaskExecutor = asyncTaskExecutor;
-    }
-
-    public CompletableFuture<List<MusicQueryResponse>> getList(@NonNull MusicQuery query) {
+    public CompletableFuture<List<MusicResponse>> getList(@NonNull MusicQuery query) {
         return CompletableFuture.supplyAsync(() -> {
             Path dirPath = getDirPath(query.getType());
             if (!Files.isDirectory(dirPath)) return null;
@@ -87,38 +85,37 @@ public final class MusicService {
 
     @NonNull
     private Predicate<Path> getPathPredicate(@NonNull MusicQuery query) {
-        Function<Function<Path, String>, Function<String, Predicate<Path>>> function =
+        Function<Function<Path, String>, Function<String, Predicate<Path>>> fn1 =
             f -> s -> ((Predicate<Path>) PathUtils::nonHiddenFile).and(p -> f.apply(p).contains(s));
 
-        Function<Path, String> getArtistName =
+        Function<Path, String> fn2 =
             p -> StringUtils.substringBefore(PathUtils.getFileName(p), NAME_SEPARATOR);
 
         return Optional
             .ofNullable(query.getArtist())
-            .map(function.apply(getArtistName))
-            .orDefaultGet(() -> Optional
-                .ofNullable(query.getName())
-                .orElse(query.getSearch())
-                .map(function.apply(PathUtils::getBaseName))
-                .orDefault(PathUtils::nonHiddenFile)
-            );
+            .map(fn1.apply(fn2))
+            .orElseNullable(query.getName())
+            .orElse(query.getSearch())
+            .map(fn1.apply(PathUtils::getBaseName))
+            .orDefault(PathUtils::nonHiddenFile);
     }
 
     @NonNull
-    private MusicQueryResponse setResponseBody(@NonNull MusicQuery query, @NonNull Path path) {
+    private MusicResponse setResponseBody(@NonNull MusicQuery query, @NonNull Path path) {
         String fileName = PathUtils.getFileName(path);
         String artist = StringUtils.substringBefore(fileName, NAME_SEPARATOR);
 
-        if (query.getType() == null) return MusicQueryResponse.withType(FilenameUtils.getBaseName(fileName));
+        if (query.getType() == null) return MusicResponse.builder().type(FilenameUtils.getBaseName(fileName)).build();
 
-        if (Category.ARTISTS.equals(query.getCategory())) return MusicQueryResponse.withArtist(artist);
+        if (MusicCategory.ARTISTS.equals(query.getCategory())) return MusicResponse.builder().artist(artist).build();
 
-        return new MusicQueryResponse(
-            artist,
-            FilenameUtils.getExtension(fileName),
-            fileName,
-            FilenameUtils.getBaseName(fileName),
-            PathUtils.getFileName(path.getParent())
-        );
+        return MusicResponse
+            .builder()
+            .artist(artist)
+            .ext(FilenameUtils.getExtension(fileName))
+            .fullName(fileName)
+            .name(FilenameUtils.getBaseName(fileName))
+            .type(PathUtils.getFileName(path.getParent()))
+            .build();
     }
 }

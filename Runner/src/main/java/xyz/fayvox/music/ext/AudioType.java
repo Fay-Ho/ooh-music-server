@@ -11,15 +11,15 @@ public final class AudioType extends MediaType {
     private static final String AUDIO_AAC_VALUE = "audio/aac";
     public static final MediaType AUDIO_FLAC;
     private static final String AUDIO_FLAC_VALUE = "audio/flac";
-    public static final MediaType AUDIO_MP3;
-    private static final String AUDIO_MP3_VALUE = "audio/mpeg";
+    public static final MediaType AUDIO_MPEG;
+    private static final String AUDIO_MPEG_VALUE = "audio/mpeg";
     public static final MediaType AUDIO_WAV;
     private static final String AUDIO_WAV_VALUE = "audio/wav";
 
     static {
         AUDIO_AAC = valueOf(AUDIO_AAC_VALUE);
         AUDIO_FLAC = valueOf(AUDIO_FLAC_VALUE);
-        AUDIO_MP3 = valueOf(AUDIO_MP3_VALUE);
+        AUDIO_MPEG = valueOf(AUDIO_MPEG_VALUE);
         AUDIO_WAV = valueOf(AUDIO_WAV_VALUE);
     }
 

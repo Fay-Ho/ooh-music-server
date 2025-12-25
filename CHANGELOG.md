@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased] - 2025-12-26
+
+### Added
+- Add user authentication module (to be refined)
+- Add exception handling module
+- Add database support
+
+### Changed
+- Code enhancement
+	* Enhance Optional chain processing capabilities
+
+### Fixed
+- Fix the error of mp3 media type
+
+### Removed
+
+
 ## [Unreleased] - 2025-12-07
 
 ### Added
@@ -19,9 +36,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Update Project Package Name
-	* Adjusted the project's base package name, migrating from the original package name to the new package name xyz.fayvox.music to unify naming conventions.
+	* Adjusted the project's base package name, migrating from the original package name to the new package name xyz.fayvox.music to unify naming conventions
 
 ### Removed
+
 
 ## [Unreleased] - 2025-11-30
 
@@ -33,6 +51,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Removed
+
 
 ## [Unreleased] - 2025-11-28
 
@@ -49,6 +68,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
+
 ## [Unreleased] - 2025-11-24
 
 ### Added
@@ -63,6 +83,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Removed
+
 
 ## [Unreleased] - 2025-11-03
 

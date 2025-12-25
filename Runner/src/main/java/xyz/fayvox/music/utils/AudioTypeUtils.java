@@ -26,7 +26,7 @@ public final class AudioTypeUtils {
             case FLAC_VALUE:
                 return AudioType.AUDIO_FLAC;
             case MP3_VALUE:
-                return AudioType.AUDIO_MP3;
+                return AudioType.AUDIO_MPEG;
             case WAV_VALUE:
                 return AudioType.AUDIO_WAV;
             default:
